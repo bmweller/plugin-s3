@@ -1,0 +1,8 @@
+{
+    "require": {
+        "aws/aws-sdk-php": "^3.70",
+        "doctrine/cache": "^1.8",
+        "psr/log": "^1.0",
+        "aws/aws-php-sns-message-validator": "^1.5"
+    }
+}

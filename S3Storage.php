@@ -2,7 +2,7 @@
 
 namespace Kanboard\Plugin\S3;
 
-require_once __DIR__.'/vendor/aws-autoloader.php';
+require_once __DIR__.'/vendor/autoloader.php';
 
 use Kanboard\Core\ObjectStorage\ObjectStorageInterface;
 use Kanboard\Core\ObjectStorage\ObjectStorageException;
