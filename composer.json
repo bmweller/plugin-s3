@@ -1,7 +1,21 @@
 {
+    "name": "kanboard/plugin-s3",
+    "type": "library",
+    "description": "Plugin to store files on Amazon S3",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Frédéric Guillot"
+        }
+    ],
+    "config": {
+        "preferred-install": "dist",
+        "optimize-autoloader": true,
+        "discard-changes": true
+    },
     "require": {
         "aws/aws-sdk-php": "^3.70",
-        "doctrine/cache": "^1.8",
+        "doctrine/cache": "^1.6.2",
         "psr/log": "^1.0",
         "aws/aws-php-sns-message-validator": "^1.5"
     }
