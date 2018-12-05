@@ -22,12 +22,18 @@ matrix:
 install:
   - git clone --depth 1 $KANBOARD_REPO
   - ln -s $TRAVIS_BUILD_DIR kanboard/plugins/$PLUGIN
+  - echo $TRAVIS_BUILD_DIR
 
 before_script:
+  - echo $PWD
   - cd kanboard
   - phpenv config-add tests/php.ini
   - composer install
-  - ls -la plugins/
+  - composer install -d plugins/$PLUGIN
 
 script:
   - phpunit -c tests/units.$DB.xml plugins/$PLUGIN/Test/
+
+before_deploy:
+  - echo $TRAVIS_TAG
+  - git -C plugins/$PLUGIN archive HEAD --prefix=${PLUGIN}/ --format=zip -o ${PLUGIN}-${TRAVIS_TAG}.zip
