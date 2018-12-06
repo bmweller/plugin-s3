@@ -37,3 +37,12 @@ script:
 before_deploy:
   - echo $TRAVIS_TAG
   - git -C plugins/$PLUGIN archive HEAD --prefix=${PLUGIN}/ --format=zip -o ${PLUGIN}-${TRAVIS_TAG}.zip
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  script: 
+  on:
+    tags: true
+    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
+
