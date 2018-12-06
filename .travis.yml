@@ -2,47 +2,38 @@ language: php
 sudo: false
 notifications:
   email: false
-
 php:
-  - 7.0
-  - 5.6
-
+- 7.0
+- 5.6
 env:
   global:
-    - PLUGIN=S3
-    - KANBOARD_REPO=https://github.com/kanboard/kanboard.git
+  - PLUGIN=S3
+  - KANBOARD_REPO=https://github.com/kanboard/kanboard.git
   matrix:
-    - DB=sqlite
-    - DB=mysql
-    - DB=postgres
-
+  - DB=sqlite
+  - DB=mysql
+  - DB=postgres
 matrix:
   fast_finish: true
-
 install:
-  - git clone --depth 1 $KANBOARD_REPO
-  - ln -s $TRAVIS_BUILD_DIR kanboard/plugins/$PLUGIN
-  - echo $TRAVIS_BUILD_DIR
-
+- git clone --depth 1 $KANBOARD_REPO ../kanboard
+- ln -s $TRAVIS_BUILD_DIR ../kanboard/plugins/$PLUGIN
 before_script:
-  - echo $PWD
-  - cd kanboard
-  - phpenv config-add tests/php.ini
-  - composer install
-  - composer install -d plugins/$PLUGIN
-
+- cd ../kanboard
+- phpenv config-add tests/php.ini
+- composer install
+- composer install -d plugins/$PLUGIN
 script:
-  - phpunit -c tests/units.$DB.xml plugins/$PLUGIN/Test/
-
+- phpunit -c tests/units.$DB.xml plugins/$PLUGIN/Test/
 before_deploy:
-  - echo $TRAVIS_TAG
-  - git -C plugins/$PLUGIN archive HEAD --prefix=${PLUGIN}/ --format=zip -o ${PLUGIN}-${TRAVIS_TAG}.zip
-
+- pushd plugins ; zip -r $TRAVIS_BUILD_DIR/${PLUGIN}-${TRAVIS_TAG}.zip ${PLUGIN} --include "${PLUGIN}/*.php" "${PLUGIN}/LICENSE" "${PLUGIN}/Locale/*" "${PLUGIN}/README.md" "${PLUGIN}/Template/*" "${PLUGIN}/vendor/*"; popd
 deploy:
   provider: releases
-  skip_cleanup: true
-  script: 
+  api_key:
+    secure: $GITHUB_DEPLOY_ENCRYPTED_SECRET
+  file: "$TRAVIS_BUILD_DIR/${PLUGIN}-${TRAVIS_TAG}.zip"
   on:
+    repo: bmweller/plugin-s3
     tags: true
-    condition: $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$
+    branch: master
 
