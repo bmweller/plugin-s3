@@ -33,7 +33,7 @@ deploy:
     secure: $GITHUB_DEPLOY_ENCRYPTED_SECRET
   file: "$TRAVIS_BUILD_DIR/${PLUGIN}-${TRAVIS_TAG}.zip"
   on:
-    repo: bmweller/plugin-s3
+    repo: ${TRAVIS_REPO_SLUG}
     tags: true
     branch: master
 
